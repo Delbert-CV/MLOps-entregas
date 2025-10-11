@@ -1,0 +1,1 @@
+hour,temperature(°c),humidity(%),visibility_(10m),snowfall_(cm),day_of_year_sin,day_of_week_sin,day_of_week_cos,hour_sin,hour_cos,seasons_spring,seasons_summer,seasons_winter,holiday_yes,functioning_day_yes
