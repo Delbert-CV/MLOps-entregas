@@ -96,7 +96,7 @@ def build_preprocessing_pipeline(
         )
 
     logging.info(
-        f"Se creo una pipeline de pre-procesamient con {len(numerical_features)} features numericos "
+        f"Se creo una pipeline de pre-procesamiento con {len(numerical_features)} features numericos."
         f"y {len(categorical_features)} features categoricos."
     )
 

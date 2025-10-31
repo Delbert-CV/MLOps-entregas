@@ -2,10 +2,11 @@ import mlflow
 import mlflow.sklearn
 import logging
 import numpy as np
-from sklearn.linear_model import Ridge
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.linear_model import Ridge
 from mlops.features import create_time_features
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.base import BaseEstimator, TransformerMixin
 from mlops.preprocess import build_preprocessing_pipeline, delete_outliers
 from mlops.dataset import load_data, clean_categorical_colums, clean_numerical_columns, clean_temporal_columns, dataset_split
 
@@ -14,6 +15,22 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
 )
+
+class DataCleaner(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        pass
+    
+    def fit(self, X, y=None):
+        return self
+    
+    def transform(self, X):
+        df = X.copy()
+        df = clean_categorical_colums(df)
+        df = clean_numerical_columns(df)
+        df = clean_temporal_columns(df)
+        df = create_time_features(df)
+        df = delete_outliers(df)
+        return df
 
 
 def train_model(
@@ -24,22 +41,22 @@ def train_model(
     random_state: int = 42,
     ):
 
-
+    # Iniciamos el logging
     logging.info("Iniciando entrenamiento")
 
     # Modulo dataset.py
     df = load_data(data_path)
 
-    df = clean_categorical_colums(df)
-    df = clean_numerical_columns(df)
-    df = clean_temporal_columns(df)
-    df = create_time_features(df)
-    df = delete_outliers(df)
-
+    # Limpiamos el dataset
+    cleaner = DataCleaner()
+    df_cleaned = cleaner.fit_transform(df)
+    
+    # Creamos el train-test split
     X_train, X_test, y_train, y_test = dataset_split(
-        df, target='clean_demanda', test_size=test_size, random_state=random_state
+        df_cleaned, target='clean_demanda', test_size=test_size, random_state=random_state
     )
 
+    # Instanciamos nuestra pipeline para 
     preprocessor = build_preprocessing_pipeline()
 
     ridge_model = Ridge(alpha=alpha, random_state=random_state)
@@ -82,4 +99,4 @@ def train_model(
 
 if __name__ == "__main__":
     results = train_model()
-    print(f"Métricas finales del modelo: {results}")
+    print(f"\n\n\nMétricas finales del modelo: {results}")
