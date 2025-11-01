@@ -1,0 +1,51 @@
+.
+├── LICENSE
+├── Makefile
+├── README.md
+├── data
+│   ├── external
+│   ├── interim
+│   ├── processed
+│   │   ├── seoul_bike_sharing_cleaned.csv
+│   │   ├── seoul_bike_sharing_cleaned.csv.dvc
+│   │   ├── seoul_bike_sharing_feature.csv
+│   │   └── seoul_bike_sharing_feature.csv.dvc
+│   └── raw
+│       ├── seoul_bike_sharing_modified.csv
+│       ├── seoul_bike_sharing_modified.csv.dvc
+│       ├── seoul_bike_sharing_original.csv
+│       └── seoul_bike_sharing_original.csv.dvc
+├── docs
+├── estructura_proyecto.txt
+├── models
+│   ├── lightgbm.pkl
+│   ├── lightgbm.pkl.dvc
+│   ├── perceptron.pkl
+│   ├── perceptron.pkl.dvc
+│   ├── ridge.pkl
+│   ├── ridge.pkl.dvc
+│   ├── xgboost.pkl
+│   └── xgboost.pkl.dvc
+├── notebooks
+│   └── fase1.ipynb
+├── pyproject.toml
+├── references
+├── reports
+│   └── figures
+├── requirements.txt
+└── src
+    ├── __init__.py
+    ├── __pycache__
+    │   ├── __init__.cpython-313.pyc
+    │   └── main.cpython-313.pyc
+    ├── main.py
+    ├── mlops
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   ├── dataset.py
+    │   ├── features.py
+    │   ├── modeling
+    │   └── preprocess.py
+    └── mlruns
+
+17 directories, 31 files
