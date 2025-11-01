@@ -14,6 +14,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from mlops.preprocess import build_preprocessing_pipeline, delete_outliers
 from mlops.dataset import load_data, dataset_split,  clean_holiday_column, clean_functioning_day, clean_seasons, clean_mixed_type, clean_weather_features, clean_date_hour
 from mlops.dataset import clean_hour, clean_target, clean_date_column
+import pickle
 
 
 logging.basicConfig(
@@ -278,6 +279,12 @@ def train_model(
         logging.info("✓ Entrenamiento completado exitosamente")
         logging.info("✓ Resultados registrados en MLflow")
         logging.info("="*80)
+        
+        # Guardamos el modelo usando pickle para versionarlo con dvc
+        with open(f'models/{model_type}.pkl', 'wb') as file:
+            pickle.dump(model_type, file)
+
+        print(f"Modelo {model_type} guardado en models/model_type.pkl")
     
     return {
         "rmse": rmse,
