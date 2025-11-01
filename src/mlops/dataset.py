@@ -38,8 +38,6 @@ def load_data(path: str) -> pd.DataFrame:
 '''
 FUNCIONES DE CORRECCION DE VALORES
 '''
-
-# Estandarizamos las fechas
 def clean_date_column(value_to_clean):
     
     if value_to_clean is None or value_to_clean == '':
@@ -52,8 +50,8 @@ def clean_date_column(value_to_clean):
     
     return cleaned
 
-# Estandarizamos los valores en Holiday
 def correct_holiday_values( value_to_clean ):
+    
     
     if ( (value_to_clean == 'nan') or (value_to_clean is None ) or (value_to_clean == '')):
         return None
@@ -65,8 +63,7 @@ def correct_holiday_values( value_to_clean ):
             return 'yes'
         elif value_to_clean == 'no holiday':
             return 'no'
- 
-# Estandarizamos los valores en functioning_day       
+        
 def correct_functioning_day_values( value_to_clean):
     
     if ( (value_to_clean == 'nan') or (value_to_clean is None ) or (value_to_clean == '')):
@@ -81,8 +78,15 @@ def correct_functioning_day_values( value_to_clean):
             return 'yes'
         else:
             return 'no'
+        
+def check_if_numeric_value ( value_to_check):
+    
+    try:
+        float(value_to_check)
+        return float(value_to_check)
+    except:
+        return np.nan
 
-# Estandarizamos los valores en seasons   
 def correct_season_values( value_to_clean):
     
     if ( (value_to_clean == 'nan') or (value_to_clean is None ) or (value_to_clean == '')):
@@ -96,16 +100,6 @@ def correct_season_values( value_to_clean):
         
         return value_to_clean
     
-# Verificamos si un valor es numerico
-def check_if_numeric_value ( value_to_check):
-    
-    try:
-        float(value_to_check)
-        return float(value_to_check)
-    except:
-        return np.nan
-
-# Estandarizamos las horas del dataset
 def correct_hour(x):
     
     if 0 <= x <= 23:
@@ -121,15 +115,33 @@ def correct_hour(x):
         return int(str(int(x)).zfill(4)[:2])
     
     return 0
+    
+
+def correct_date(value_to_clean):
+    
+    if value_to_clean is None or value_to_clean == '':
+        return None
+
+    cleaned = str(value_to_clean).strip()
+
+    if cleaned.lower() == 'nan':
+        return None
+
+    return cleaned
 
 
-# Funciones de limpieza
-def clean_categorical_colums(df: pd.DataFrame) -> pd.DataFrame:
+'''
+FUNCIONES PARA ELIMINAR NANS
+'''
+
+def clean_date_column(df: pd.DataFrame):
     
-    # Limpiamos las fechas del dataset
-    df['date'] = df['date'].apply(clean_date_column)
+    df['date'] = df['date'].apply(correct_date)
     
-    # Limpiamos la columna de holiday del dataset
+    return df
+
+def clean_holiday_column(df: pd.DataFrame):
+    
     df['Holiday_or_not'] = df['holiday'].apply(correct_holiday_values)
     df['holiday'] = df['Holiday_or_not']
     df.drop(columns=['Holiday_or_not'], inplace=True)
@@ -141,12 +153,17 @@ def clean_categorical_colums(df: pd.DataFrame) -> pd.DataFrame:
                     else 'no' if (h is None and d not in festive_dates)
                     else h for d,h in zip(df['date'], df['holiday'])]
     
-    # Limpiamos functioning_day
+    return df
+
+def clean_functioning_day(df: pd.DataFrame):
+    
     df['functioning_day_or_not'] = df['functioning_day'].apply(correct_functioning_day_values)
     df['functioning_day'] = df['functioning_day_or_not']
     df.drop(columns=['functioning_day_or_not'], inplace=True)
     
-    # Limpiamos seaons
+    return df
+
+def clean_seasons(df: pd.DataFrame):
     df['seasons_corrected'] = df['seasons'].apply(correct_season_values)
     df['seasons'] = df['seasons_corrected']
     df.drop(columns=['seasons_corrected'], inplace=True)
@@ -155,7 +172,7 @@ def clean_categorical_colums(df: pd.DataFrame) -> pd.DataFrame:
     '06/12/2017', '14/12/2017', '16/12/2017', '27/12/2017', '01/01/2018',
     '12/01/2018', '14/01/2018', '17/01/2018', '18/01/2018', '21/01/2018',
     '27/01/2018', '30/01/2018', '05/02/2018', '09/02/2018', '19/02/2018',
-    '20/02/2018', '25/02/2018', '26/02/2018', '28/02/2018'
+    '20/02/2018', '25/02/2018', '26/02/2018', '28/02/2018', '05/02/2018'
     ]
 
     spring_dates = [
@@ -178,29 +195,24 @@ def clean_categorical_colums(df: pd.DataFrame) -> pd.DataFrame:
     '04/11/2018', '08/11/2018', '10/11/2018', '13/11/2018', '19/11/2018',
     '20/11/2018', '23/11/2018', '29/11/2018', '30/11/2018'
     ]
-    
-    df['seasons'] = [ 
-                      'winter' if (s is None and d in winter_dates)
-                 else 'spring' if (s is None and d in spring_dates)
-                 else 'summer' if (s is None and d in summer_dates)
-                 else 'autumn' if (s is None and d in autumn_dates)
-                 else s for d,s in zip(df['date'], df['seasons'])]
-    
 
-    
-    # Eliminamos mixed_type_col si existe
-    if 'mixed_type_col' in df.columns:
-        df.drop(columns=['mixed_type_col'], inplace=True)
-    
+
+
+    df['seasons'] = [ 
+                         'winter' if (s is None and d in winter_dates)
+                    else 'spring' if (s is None and d in spring_dates)
+                    else 'summer' if (s is None and d in summer_dates)
+                    else 'autumn' if (s is None and d in autumn_dates)
+                    else s for d,s in zip(df['date'], df['seasons'])]
+
     return df
 
-
-
-def clean_numerical_columns(df: pd.DataFrame) -> pd.DataFrame:
+def clean_mixed_type(df: pd.DataFrame):
     
-    # Limpiamos demanda
-    df['clean_demanda'] = df['demanda'].apply(check_if_numeric_value)
-    df.dropna(subset=['clean_demanda'], inplace=True)
+    df.drop(columns=['mixed_type_col'], inplace= True)
+    return df
+
+def clean_weather_features(df: pd.DataFrame):
     
     weather_cols = [
     'temperature(°c)', 'humidity(%)', 'wind_speed_(m/s)', 'visibility_(10m)', 'dew_point_temperature(°c)', 'solar_radiation_(mj/m2)', 'rainfall(mm)', 'snowfall_(cm)'
@@ -209,25 +221,28 @@ def clean_numerical_columns(df: pd.DataFrame) -> pd.DataFrame:
     for col in weather_cols:
         df[ f"{col}" ] = df[ f"{col}"].apply(check_if_numeric_value)
         
-        
     for col in weather_cols:
         df[f"{col}"] = df[f"{col}"].fillna(method= 'ffill')
         df[f"{col}"] = df[f"{col}"].fillna(method= 'bfill')
-
+        
     return df
 
-
-def clean_temporal_columns(df: pd.DataFrame) -> pd.DataFrame:
+def clean_date_hour(df: pd.DataFrame):
     
     df.dropna(subset=['date', 'hour'], inplace=True)
     
-    
-    # Convertimos la columna 'hour' a numérica de forma segura
-    df["hour"] = pd.to_numeric(df["hour"], errors="coerce")
+    return df
 
-    # Si existen valores NaN después de la conversión, los rellenamos con 0
-    df["hour"].fillna(0, inplace=True)
+def clean_target(df: pd.DataFrame):
     
+    df['demanda'] = df['demanda'].apply(check_if_numeric_value)
+    df.dropna(subset=['demanda'], inplace=True)
+    
+    return df
+
+def clean_hour(df: pd.DataFrame):
+    
+    df['hour'] = pd.to_numeric(df['hour'], errors='coerce')
     df['hour'] = df['hour'].apply(correct_hour)
     
     return df

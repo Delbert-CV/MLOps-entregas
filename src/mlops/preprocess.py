@@ -17,13 +17,13 @@ NUMERICAL_FEATURES = [
     "dew_point_temperature(°c)",
     "solar_radiation_(mj/m2)",
     "rainfall(mm)",
-    "snowfall_(cm)",
+    "snowfall_(cm)"
 ]
 
 CATEGORICAL_FEATURES = [
     "seasons",
     "holiday",
-    "functioning_day",
+    "functioning_day"
 ]
 
 
@@ -46,7 +46,7 @@ def delete_outliers(df: pd.DataFrame) -> pd.DataFrame:
     mask_vis    = (df['visibility_(10m)'] >= 0.0) & (df['visibility_(10m)'] <= 3581.0)
     mask_dew    = (df['dew_point_temperature(°c)'] >= -34.0) & (df['dew_point_temperature(°c)'] <= 44.4)
     mask_solar  = (df['solar_radiation_(mj/m2)'] >= 0.00) & (df['solar_radiation_(mj/m2)'] <= 2.4)
-    mask_demand = (df['clean_demanda'] >= 0.00) & (df['clean_demanda'] <= 2392.5)
+    mask_demand = (df['demanda'] >= 0.00) & (df['demanda'] <= 2392.5)
     mask_snow   = (df['snowfall_(cm)'] >= 0.00) & (df['snowfall_(cm)'] <= 40.00)
     mask_rain   = (df['rainfall(mm)'] >= 0.00) & (df['rainfall(mm)'] <= 2015)
 
@@ -68,9 +68,8 @@ def delete_outliers(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_preprocessing_pipeline(
-    numerical_features: list[str] = None,
-    categorical_features: list[str] = None,
-) -> ColumnTransformer:
+                                    numerical_features: list[str] = None,
+                                    categorical_features: list[str] = None) -> ColumnTransformer:
 
     if numerical_features is None:
         numerical_features = NUMERICAL_FEATURES
