@@ -288,22 +288,3 @@ def train_model(
         "median_ae": medae,
         "mean_bias_error": mbe
     }
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Script de entrenamiento de modelos.")
-    
-    # Define el argumento model_type para que pueda ser leído desde la terminal
-    parser.add_argument(
-        '--model_type', 
-        type=str, 
-        default='ridge',
-        help='Tipo de modelo a entrenar (ridge o xgboost).'
-    )
-
-    args = parser.parse_args()
-    
-
-    train_model(
-        model_type=args.model_type
-    )

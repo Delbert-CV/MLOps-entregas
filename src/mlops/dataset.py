@@ -4,6 +4,9 @@ import pandas as pd
 import numpy as np
 import logging
 
+'''
+Configuración del logging
+'''
 
 logging.basicConfig(
     level=logging.INFO,
@@ -15,6 +18,10 @@ FUNCION DE CARGA DE ARCHIVOS CSV
 '''
 
 def load_data(path: str) -> pd.DataFrame:
+    
+    '''
+    FUNCION DE CARGA DE ARCHIVOS CSV
+    '''
     
     # Generamos el objeto Path
     path = Path(path)
