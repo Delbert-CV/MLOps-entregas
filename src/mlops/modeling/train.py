@@ -171,7 +171,7 @@ def train_model(
     elif model_type.lower() == "perceptron":
         
         mlp_params = {
-        "hidden_layer_sizes": (256, 128, 64),
+        "hidden_layer_sizes": (256, 128, 4),
         "activation": "relu",
         "solver": "adam",
         "learning_rate": "adaptive",
