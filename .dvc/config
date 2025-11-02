@@ -1,7 +1,11 @@
 [core]
-    remote = storage
+    remote = team_remote
     autostage = true
 ['remote "myremote"']
     url = gdrive://17ab2FFujd4tg7i9Aclk438YxPmxG62YG
 ['remote "storage"']
     url = gdrive://17ab2FFujd4tg7i9Aclk438YxPmxG62YG
+['remote "team_remote"']
+    url = s3://itesm-mna/202502-equipo48
+    region = us-east-2
+    profile = equipo48
