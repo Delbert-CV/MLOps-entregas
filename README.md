@@ -19,52 +19,52 @@ MLOps applied to Seoul Bike sharing demand
 ## Project Organization
 
 ```
-├── LICENSE            <- Open-source license if one is chosen
-├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
-├── README.md          <- The top-level README for developers using this project.
+├── LICENSE
+├── Makefile
+├── README.md
 ├── data
-│   ├── external       <- Data from third party sources.
-│   ├── interim        <- Intermediate data that has been transformed.
-│   ├── processed      <- The final, canonical data sets for modeling.
-│   └── raw            <- The original, immutable data dump.
-│
-├── docs               <- A default mkdocs project; see www.mkdocs.org for details
-│
-├── models             <- Trained and serialized models, model predictions, or model summaries
-│
-├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-│                         the creator's initials, and a short `-` delimited description, e.g.
-│                         `1.0-jqp-initial-data-exploration`.
-│
-├── pyproject.toml     <- Project configuration file with package metadata for 
-│                         seoul_bike_sharing_demand and configuration for tools like black
-│
-├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-│
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures        <- Generated graphics and figures to be used in reporting
-│
-├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-│                         generated with `pip freeze > requirements.txt`
-│
-├── setup.cfg          <- Configuration file for flake8
-│
-└── seoul_bike_sharing_demand   <- Source code for use in this project.
-    │
-    ├── __init__.py             <- Makes seoul_bike_sharing_demand a Python module
-    │
-    ├── config.py               <- Store useful variables and configuration
-    │
-    ├── dataset.py              <- Scripts to download or generate data
-    │
-    ├── features.py             <- Code to create features for modeling
-    │
-    ├── modeling                
-    │   ├── __init__.py 
-    │   ├── predict.py          <- Code to run model inference with trained models          
-    │   └── train.py            <- Code to train models
-    │
-    └── plots.py                <- Code to create visualizations
+│   ├── external
+│   ├── interim
+│   ├── processed                               <-- Datasets para modelado
+│   │   ├── seoul_bike_sharing_cleaned.csv      <-- No incluido en el repo por razones de seguridad
+│   │   ├── seoul_bike_sharing_cleaned.csv.dvc  <-- Incluido en el repo para reproducir experimentos
+│   │   ├── seoul_bike_sharing_feature.csv      <-- No incluido en el repo por razones de seguridad
+│   │   └── seoul_bike_sharing_feature.csv.dvc  <-- Incluido en el repo para reproducir experimentos
+│   └── raw                                     <-- Datasets original y modificado
+│       ├── seoul_bike_sharing_modified.csv     <-- No incluido en el repo por razones de seguridad
+│       ├── seoul_bike_sharing_modified.csv.dvc <-- Incluido en el repo para reproducir experimentos
+│       ├── seoul_bike_sharing_original.csv     <-- No incluido en el repo por razones de seguridad
+│       └── seoul_bike_sharing_original.csv.dvc <-- Incluido en el repo para reproducir experimentos
+├── docs
+├── estructura_proyecto.txt
+├── models
+│   ├── lightgbm.pkl                            <-- No incluido en el repo por razones de seguridad
+│   ├── lightgbm.pkl.dvc                        <-- Incluido en el repo para reproducir experimentos
+│   ├── perceptron.pkl                          <-- No incluido en el repo por razones de seguridad
+│   ├── perceptron.pkl.dvc                      <-- Incluido en el repo para reproducir experimentos
+│   ├── ridge.pkl                               <-- No incluido en el repo por razones de seguridad
+│   ├── ridge.pkl.dvc                           <-- Incluido en el repo para reproducir experimentos
+│   ├── xgboost.pkl                             <-- No incluido en el repo por razones de seguridad
+│   └── xgboost.pkl.dvc                         <-- Incluido en el repo para reproducir experimentos
+├── notebooks
+│   └── fase1.ipynb                             <-- EDA y Feature engineering inicial
+├── pyproject.toml
+├── references
+├── reports
+│   └── figures
+├── requirements.txt
+└── src
+    ├── __init__.py
+    ├── main.py
+    ├── mlops
+    │   ├── __init__.py
+    │   ├── dataset.py
+    │   ├── features.py
+    │   ├── modeling
+    │   │   ├── __init__.py
+    │   │   └── train.py
+    │   └── preprocess.py
+    └── mlruns
 ```
 
 --------
