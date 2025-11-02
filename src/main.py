@@ -1,7 +1,54 @@
-# src/mlops/main.py
 import argparse
 import logging
 from mlops.modeling.train import train_model
+
+"""
+    Ejecuta el pipeline completo de entrenamiento desde la línea de comandos.
+
+    Esta función define y procesa los argumentos necesarios para configurar 
+    la ejecución del entrenamiento del modelo de predicción de demanda de bicicletas 
+    del proyecto Seoul Bike Sharing. Permite especificar parámetros clave como 
+    la ruta del dataset, la variable objetivo, el tipo de modelo y los hiperparámetros 
+    de configuración.
+
+    Al ejecutarse como script principal (`__main__`), inicializa el registro 
+    de logs, interpreta los argumentos proporcionados por el usuario y llama 
+    a la función `train_model()` con los valores correspondientes.
+
+    Parámetros (línea de comandos)
+    ------------------------------
+    --data_path : str, opcional
+        Ruta al archivo CSV del dataset. Por defecto: `"data/raw/seoul_bike_sharing_modified.csv"`.
+    --target : str, opcional
+        Nombre de la columna objetivo a predecir. Por defecto: `"clean_demanda"`.
+    --model_type : str, opcional
+        Tipo de modelo a entrenar. Opciones válidas: `"ridge"`, `"xgboost"`, `"lightgbm"`, `"perceptron"`.
+        Por defecto: "ridge".
+    --alpha : float, opcional
+        Parámetro de regularización (solo aplicable para modelos Ridge o Lasso). Por defecto: `1.0`.
+    --test_size : float, opcional
+        Proporción del conjunto de prueba. Por defecto: `0.3`.
+    --random_state : int, opcional
+        Semilla para asegurar reproducibilidad. Por defecto: `42`.
+
+    Comportamiento
+    --------------
+    - Configura el entorno de logging para registrar la ejecución.
+    - Analiza los argumentos proporcionados por el usuario.
+    - Llama a la función `train_model()` para ejecutar el pipeline de entrenamiento.
+    - Registra en el log el inicio y finalización del proceso.
+
+    Uso desde CLI
+    -------------
+    Ejemplo de ejecución desde la terminal:
+        python main.py --model_type lightgbm --test_size 0.25 --alpha 0.8
+
+    Retorna
+    -------
+    None
+        La función no devuelve valores, pero ejecuta y registra el proceso completo de entrenamiento.
+"""
+
 
 def parse_args():
     parser = argparse.ArgumentParser(
