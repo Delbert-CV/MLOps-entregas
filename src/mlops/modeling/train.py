@@ -23,6 +23,38 @@ logging.basicConfig(
 )
 
 class DataCleaner(BaseEstimator, TransformerMixin):
+    
+    """
+    Clase encargada de limpiar y depurar el conjunto de datos antes del modelado.
+
+    La clase `DataCleaner` aplica de forma secuencial todas las funciones de limpieza 
+    definidas en el pipeline, asegurando la consistencia, completitud y calidad del 
+    dataset. Implementa la interfaz de Scikit-Learn (`BaseEstimator`, `TransformerMixin`) 
+    para integrarse fácilmente en pipelines de preprocesamiento.
+
+    Métodos
+    -------
+    fit(X, y=None)
+        Método requerido por la API de Scikit-Learn. No realiza ajustes y retorna la propia instancia.
+    transform(X)
+        Aplica las distintas funciones de limpieza sobre una copia del DataFrame original, 
+        incluyendo corrección de fechas, tratamiento de valores nulos, estandarización de 
+        variables categóricas, limpieza de datos meteorológicos, eliminación de outliers 
+        y validación de la variable objetivo.
+
+    Parámetros
+    ----------
+    X : pandas.DataFrame
+        Dataset original con las variables crudas antes de la limpieza.
+    y : Ignorado, opcional
+        Parámetro incluido por compatibilidad con la API de Scikit-Learn.
+
+    Retorna
+    -------
+    pandas.DataFrame
+        DataFrame completamente limpio y listo para las etapas de ingeniería de características.
+    """
+
     def __init__(self):
         pass
     
@@ -43,7 +75,38 @@ class DataCleaner(BaseEstimator, TransformerMixin):
         df = clean_hour(df)
         return df
     
+
 class FeatureEngineering(BaseEstimator, TransformerMixin):
+    
+    """
+    Clase encargada de generar características temporales a partir de la columna de fecha.
+
+    La clase `FeatureEngineering` implementa la lógica de creación de variables derivadas 
+    del tiempo mediante la función `create_time_features`. Agrega columnas como año, mes, 
+    día de la semana, día del año y sus representaciones cíclicas para capturar patrones 
+    temporales relevantes en el modelo.
+
+    Métodos
+    -------
+    fit(X, y=None)
+        Método requerido por la API de Scikit-Learn. No realiza ajustes y retorna la propia instancia.
+    transform(X)
+        Aplica la función `create_time_features` sobre una copia del DataFrame para generar 
+        las nuevas variables temporales.
+
+    Parámetros
+    ----------
+    X : pandas.DataFrame
+        Dataset limpio previo a la generación de características.
+    y : Ignorado, opcional
+        Parámetro incluido por compatibilidad con la API de Scikit-Learn.
+
+    Retorna
+    -------
+    pandas.DataFrame
+        DataFrame enriquecido con variables temporales y codificaciones cíclicas.
+    """
+
     def __init__(self):
         pass
     
@@ -56,6 +119,7 @@ class FeatureEngineering(BaseEstimator, TransformerMixin):
         return df
 
 
+
 def train_model(
                 data_path: str = "data/raw/seoul_bike_sharing_modified.csv",
                 target: str = "clean_demanda",
@@ -63,6 +127,52 @@ def train_model(
                 alpha: float = 1.0,
                 test_size: float = 0.3,
                 random_state: int = 42) -> dict:
+    
+    """
+    Entrena, evalúa y registra un modelo de predicción de demanda de bicicletas.
+
+    Esta función constituye la fase principal del pipeline de modelado, integrando
+    los pasos de carga, limpieza, ingeniería de características, partición de datos,
+    selección del modelo, entrenamiento, evaluación y registro en MLflow. 
+    Admite múltiples algoritmos de regresión (Ridge, XGBoost, LightGBM y MLPRegressor) 
+    y permite parametrizar los hiperparámetros clave y el tamaño del conjunto de prueba.
+
+    Parámetros
+    ----------
+    data_path : str, opcional (por defecto="data/raw/seoul_bike_sharing_modified.csv")
+        Ruta del archivo CSV que contiene el dataset de entrada.
+    target : str, opcional (por defecto="clean_demanda")
+        Nombre de la columna objetivo a predecir.
+    model_type : str, opcional (por defecto="ridge")
+        Tipo de modelo a entrenar. Opciones válidas: "ridge", "xgboost", "lightgbm", "perceptron".
+    alpha : float, opcional (por defecto=1.0)
+        Parámetro de regularización L2 utilizado por el modelo Ridge.
+    test_size : float, opcional (por defecto=0.3)
+        Proporción del dataset destinada al conjunto de prueba.
+    random_state : int, opcional (por defecto=42)
+        Semilla aleatoria para asegurar reproducibilidad.
+
+    Retorna
+    -------
+    dict
+        Diccionario con las métricas de evaluación del modelo entrenado:
+        - rmse: Raíz del error cuadrático medio.
+        - r2: Coeficiente de determinación.
+        - mae: Error absoluto medio.
+        - mape: Error porcentual absoluto medio.
+        - explained_variance: Varianza explicada del modelo.
+        - median_ae: Error absoluto mediano.
+        - mean_bias_error: Sesgo promedio de las predicciones.
+
+    Notas
+    -----
+    - Aplica los transformadores `DataCleaner` y `FeatureEngineering` antes del entrenamiento.
+    - Usa `build_preprocessing_pipeline` para generar el pipeline de preprocesamiento con 
+      escalado y codificación categórica.
+    - Registra parámetros, métricas y el modelo final en MLflow.
+    - Guarda el modelo entrenado como archivo `.pkl` para su versionamiento con DVC.
+    """
+
 
     # Iniciamos el logging
     logging.info("="*80)

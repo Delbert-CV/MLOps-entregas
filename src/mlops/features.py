@@ -13,6 +13,28 @@ logging.basicConfig(
 
 def create_time_features(df: pd.DataFrame, date_col: str = "date") -> pd.DataFrame:
     
+    """
+    Genera características temporales a partir de la columna de fecha.
+
+    Esta función descompone la variable de fecha en múltiples componentes 
+    temporales como año, mes, día de la semana y día del año. Además, aplica 
+    codificación cíclica para capturar la naturaleza periódica de las variables 
+    temporales, como mes, día de la semana y hora.
+
+    Parámetros
+    ----------
+    df : pandas.DataFrame
+        DataFrame que contiene la columna de fecha.
+    date_col : str, opcional (por defecto="date")
+        Nombre de la columna que contiene las fechas en formato '%d/%m/%Y'.
+
+    Retorna
+    -------
+    pandas.DataFrame
+        DataFrame con las nuevas columnas temporales y las codificaciones cíclicas añadidas.
+    """
+
+    
     df['date'] = pd.to_datetime(df['date'], format='%d/%m/%Y')
     
     # Generamos las columnas temporales
@@ -33,6 +55,29 @@ def create_time_features(df: pd.DataFrame, date_col: str = "date") -> pd.DataFra
     return df
 
 def encode_categorical_features(df: pd.DataFrame, categorical_cols=None) -> pd.DataFrame:
+    
+    """
+    Aplica codificación one-hot a las variables categóricas del dataset.
+
+    Esta función transforma las columnas categóricas especificadas en variables 
+    binarias mediante la técnica One-Hot Encoding, eliminando la primera categoría 
+    para evitar multicolinealidad. Facilita la incorporación de variables categóricas 
+    en modelos de Machine Learning.
+
+    Parámetros
+    ----------
+    df : pandas.DataFrame
+        DataFrame que contiene las variables categóricas.
+    categorical_cols : list, opcional
+        Lista de nombres de columnas categóricas a codificar. 
+        Por defecto: ["seasons", "holiday", "functioning_day"].
+
+    Retorna
+    -------
+    pandas.DataFrame
+        DataFrame con las columnas categóricas reemplazadas por sus variables codificadas.
+    """
+
 
     if categorical_cols is None:
         categorical_cols = ["seasons", "holiday", "functioning_day"]
@@ -53,6 +98,28 @@ def encode_categorical_features(df: pd.DataFrame, categorical_cols=None) -> pd.D
 
 
 def scale_numerical_features(df: pd.DataFrame, numerical_cols=None) -> pd.DataFrame:
+    
+    """
+    Escala las características numéricas utilizando la técnica Min-Max Scaling.
+
+    Esta función normaliza los valores de las columnas numéricas para llevarlos 
+    al rango [0, 1], mejorando la estabilidad y el desempeño de los modelos 
+    sensibles a la magnitud de las variables.
+
+    Parámetros
+    ----------
+    df : pandas.DataFrame
+        DataFrame que contiene las características numéricas a escalar.
+    numerical_cols : list, opcional
+        Lista de columnas numéricas a escalar. Si no se especifica, 
+        se utilizan las variables meteorológicas por defecto.
+
+    Retorna
+    -------
+    pandas.DataFrame
+        DataFrame con las columnas numéricas escaladas en el rango [0, 1].
+    """
+
 
     if numerical_cols is None:
         numerical_cols = [

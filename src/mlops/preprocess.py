@@ -29,6 +29,27 @@ CATEGORICAL_FEATURES = [
 
 def IQR( df, col ):
     
+    """
+    Calcula los límites inferior y superior para detección de valores atípicos mediante el método del IQR.
+
+    Esta función utiliza el rango intercuartílico (IQR) para identificar posibles 
+    valores atípicos en una columna numérica, devolviendo los límites usados 
+    para filtrar los datos fuera del rango esperado.
+
+    Parámetros
+    ----------
+    df : pandas.DataFrame
+        DataFrame que contiene la columna a evaluar.
+    col : str
+        Nombre de la columna sobre la cual se calculará el IQR.
+
+    Retorna
+    -------
+    list[float]
+        Lista con dos elementos: [límite_inferior, límite_superior].
+    """
+
+    
     q1 = df[f"{col}"].quantile(0.25)
     q3 = df[f"{col}"].quantile(0.75)
     IQR = q3 - q1
@@ -39,6 +60,25 @@ def IQR( df, col ):
     return [ lower_limit, upper_limit]
 
 def delete_outliers(df: pd.DataFrame) -> pd.DataFrame:
+    
+    """
+    Elimina valores atípicos de las principales variables del dataset.
+
+    Esta función aplica condiciones de rango específicas para cada variable 
+    meteorológica y la variable objetivo 'demanda', eliminando registros 
+    que contengan valores fuera de los límites definidos.
+
+    Parámetros
+    ----------
+    df : pandas.DataFrame
+        DataFrame que contiene las variables meteorológicas y de demanda.
+
+    Retorna
+    -------
+    pandas.DataFrame
+        DataFrame filtrado sin valores atípicos según los rangos establecidos.
+    """
+
     
     mask_temp   = (df['temperature(°c)'] >= -25.3) & (df['temperature(°c)'] <= 51.5)
     mask_hum    = (df['humidity(%)'] >= 0.0) & (df['humidity(%)'] <= 100.0)
@@ -70,6 +110,30 @@ def delete_outliers(df: pd.DataFrame) -> pd.DataFrame:
 def build_preprocessing_pipeline(
                                     numerical_features: list[str] = None,
                                     categorical_features: list[str] = None) -> ColumnTransformer:
+    
+    """
+    Construye un pipeline de preprocesamiento para datos categóricos y numéricos.
+
+    Esta función crea un objeto `ColumnTransformer` que combina transformaciones 
+    personalizadas para columnas categóricas y numéricas, incluyendo codificación 
+    One-Hot y escalado estándar. Permite automatizar el preprocesamiento de datos 
+    antes del entrenamiento del modelo.
+
+    Parámetros
+    ----------
+    numerical_features : list[str], opcional
+        Lista de nombres de columnas numéricas a escalar. Si no se especifica, 
+        se usan las variables definidas en NUMERICAL_FEATURES.
+    categorical_features : list[str], opcional
+        Lista de nombres de columnas categóricas a codificar. Si no se especifica, 
+        se usan las variables definidas en CATEGORICAL_FEATURES.
+
+    Retorna
+    -------
+    sklearn.compose.ColumnTransformer
+        Objeto configurado con las transformaciones para columnas numéricas y categóricas.
+    """
+
 
     if numerical_features is None:
         numerical_features = NUMERICAL_FEATURES
@@ -102,6 +166,25 @@ def build_preprocessing_pipeline(
     return preprocessor
 
 def summarize_pipeline(preprocessor: ColumnTransformer):
+    
+    """
+    Muestra un resumen de la configuración del pipeline de preprocesamiento.
+
+    Esta función registra en el log la estructura del `ColumnTransformer`, 
+    indicando qué transformadores se aplican, cuántas columnas afectan 
+    y cuáles son sus nombres, facilitando la trazabilidad del pipeline.
+
+    Parámetros
+    ----------
+    preprocessor : sklearn.compose.ColumnTransformer
+        Objeto del pipeline de preprocesamiento previamente creado.
+
+    Retorna
+    -------
+    None
+        Solo registra la información del pipeline en el log.
+    """
+
 
     logging.info("Configuracion del pipeline:")
     for name, transformer, cols in preprocessor.transformers:
