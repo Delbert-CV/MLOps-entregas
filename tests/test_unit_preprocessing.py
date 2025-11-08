@@ -1,6 +1,6 @@
 import pandas as pd
 import pytest
-from src.mlops.modeling.train import DataCleaner, FeatureEngineering # ¡Importa tus clases!
+from src.mlops.modeling.train import DataCleaner, FeatureEngineering 
 
 def test_datacleaner_transform(sample_clean_data):
     """
@@ -32,8 +32,7 @@ def test_featureengineering_transform(sample_clean_data):
     featured_df = feature_eng.fit_transform(sample_clean_data)
     
     # ASSERT
-    assert isinstance(featured_df, pd.DataFrame)
-    # (Basado en el nombre 'create_time_features')
+    assert isinstance(featured_df, pd.DataFrame)    
     assert "month" in featured_df.columns
     assert "day_of_week" in featured_df.columns
     assert "month_sin" in featured_df.columns  
