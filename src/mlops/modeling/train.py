@@ -32,6 +32,38 @@ logging.basicConfig(
 # --- Clases de Transformación Personalizadas 
 
 class DataCleaner(BaseEstimator, TransformerMixin):
+    
+    """
+    Clase encargada de limpiar y depurar el conjunto de datos antes del modelado.
+
+    La clase `DataCleaner` aplica de forma secuencial todas las funciones de limpieza 
+    definidas en el pipeline, asegurando la consistencia, completitud y calidad del 
+    dataset. Implementa la interfaz de Scikit-Learn (`BaseEstimator`, `TransformerMixin`) 
+    para integrarse fácilmente en pipelines de preprocesamiento.
+
+    Métodos
+    -------
+    fit(X, y=None)
+        Método requerido por la API de Scikit-Learn. No realiza ajustes y retorna la propia instancia.
+    transform(X)
+        Aplica las distintas funciones de limpieza sobre una copia del DataFrame original, 
+        incluyendo corrección de fechas, tratamiento de valores nulos, estandarización de 
+        variables categóricas, limpieza de datos meteorológicos, eliminación de outliers 
+        y validación de la variable objetivo.
+
+    Parámetros
+    ----------
+    X : pandas.DataFrame
+        Dataset original con las variables crudas antes de la limpieza.
+    y : Ignorado, opcional
+        Parámetro incluido por compatibilidad con la API de Scikit-Learn.
+
+    Retorna
+    -------
+    pandas.DataFrame
+        DataFrame completamente limpio y listo para las etapas de ingeniería de características.
+    """
+
     def __init__(self):
         pass
     
@@ -52,7 +84,38 @@ class DataCleaner(BaseEstimator, TransformerMixin):
         df = clean_hour(df)
         return df
     
+
 class FeatureEngineering(BaseEstimator, TransformerMixin):
+    
+    """
+    Clase encargada de generar características temporales a partir de la columna de fecha.
+
+    La clase `FeatureEngineering` implementa la lógica de creación de variables derivadas 
+    del tiempo mediante la función `create_time_features`. Agrega columnas como año, mes, 
+    día de la semana, día del año y sus representaciones cíclicas para capturar patrones 
+    temporales relevantes en el modelo.
+
+    Métodos
+    -------
+    fit(X, y=None)
+        Método requerido por la API de Scikit-Learn. No realiza ajustes y retorna la propia instancia.
+    transform(X)
+        Aplica la función `create_time_features` sobre una copia del DataFrame para generar 
+        las nuevas variables temporales.
+
+    Parámetros
+    ----------
+    X : pandas.DataFrame
+        Dataset limpio previo a la generación de características.
+    y : Ignorado, opcional
+        Parámetro incluido por compatibilidad con la API de Scikit-Learn.
+
+    Retorna
+    -------
+    pandas.DataFrame
+        DataFrame enriquecido con variables temporales y codificaciones cíclicas.
+    """
+
     def __init__(self):
         pass
     
@@ -65,6 +128,7 @@ class FeatureEngineering(BaseEstimator, TransformerMixin):
         return df
 
 # --- Función Principal de Entrenamiento (Refactorizada) ---
+
 
 def train_model(
         data_path: str = "data/raw/seoul_bike_sharing_modified.csv",
