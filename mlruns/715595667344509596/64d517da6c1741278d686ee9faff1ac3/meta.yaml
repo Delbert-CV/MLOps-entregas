@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/715595667344509596/64d517da6c1741278d686ee9faff1ac3/artifacts
+end_time: 1762062979472
+entry_point_name: ''
+experiment_id: '715595667344509596'
+lifecycle_stage: active
+run_id: 64d517da6c1741278d686ee9faff1ac3
+run_name: xgboost_Experiment
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762062968097
+status: 3
+tags: []
+user_id: jhobe

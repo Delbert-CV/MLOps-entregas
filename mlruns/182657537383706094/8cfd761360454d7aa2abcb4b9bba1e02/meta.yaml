@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/182657537383706094/8cfd761360454d7aa2abcb4b9bba1e02/artifacts
+end_time: 1762062898999
+entry_point_name: ''
+experiment_id: '182657537383706094'
+lifecycle_stage: active
+run_id: 8cfd761360454d7aa2abcb4b9bba1e02
+run_name: ridge_Experiment
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762062890431
+status: 3
+tags: []
+user_id: jhobe

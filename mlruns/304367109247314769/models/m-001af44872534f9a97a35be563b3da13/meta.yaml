@@ -1,0 +1,10 @@
+artifact_location: mlflow-artifacts:/304367109247314769/models/m-001af44872534f9a97a35be563b3da13/artifacts
+creation_timestamp: 1762062797037
+experiment_id: '304367109247314769'
+last_updated_timestamp: 1762062806924
+model_id: m-001af44872534f9a97a35be563b3da13
+model_type: ''
+name: perceptron_pipeline_model
+source_run_id: 55bb4586760f4179ae38d8ed97fbd0d7
+status: 2
+status_message: null

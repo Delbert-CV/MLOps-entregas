@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/304367109247314769/55bb4586760f4179ae38d8ed97fbd0d7/artifacts
+end_time: 1762062806952
+entry_point_name: ''
+experiment_id: '304367109247314769'
+lifecycle_stage: active
+run_id: 55bb4586760f4179ae38d8ed97fbd0d7
+run_name: perceptron_Experiment
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762062774109
+status: 3
+tags: []
+user_id: jhobe
