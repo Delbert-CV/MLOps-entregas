@@ -11,13 +11,13 @@ from xgboost import XGBRegressor
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import Ridge
 from sklearn.neural_network import MLPRegressor
-from mlops.features import create_time_features, encode_categorical_features
+from ..features import create_time_features, encode_categorical_features
 from sklearn.metrics import (mean_squared_error, r2_score, mean_absolute_error, 
                              mean_absolute_percentage_error, explained_variance_score, 
                              median_absolute_error)
 from sklearn.base import BaseEstimator, TransformerMixin
-from mlops.preprocess import build_preprocessing_pipeline, delete_outliers
-from mlops.dataset import (load_data, dataset_split, clean_holiday_column, 
+from ..preprocess import build_preprocessing_pipeline, delete_outliers
+from ..dataset import (load_data, dataset_split, clean_holiday_column, 
                            clean_functioning_day, clean_seasons, clean_mixed_type, 
                            clean_weather_features, clean_date_hour, clean_hour, 
                            clean_target, clean_date_column)
@@ -174,14 +174,14 @@ def train_model(
     logging.info("PASO 4/8: Dividiendo dataset en train y test...")
     X_train, X_test, y_train, y_test = dataset_split(
         df_featured,
-        target=target,         # <-- CORREGIDO: Usa el parámetro 'target'
+        target=target,        
         test_size=test_size,
-        random_state=random_state  # <-- CORREGIDO: Usa 'random_state'
+        random_state=random_state 
     )
     logging.info(f"Train set: {X_train.shape}, Test set: {X_test.shape}")
     
     # PASO 5/8: Configurando pipeline de preprocesamiento
-    # ... (Tu código de features numéricas y categóricas es perfecto) ...
+    
     logging.info("-" * 80)
     logging.info("PASO 5/8: Configurando pipeline de preprocesamiento...")
     numerical_features_to_use = [
@@ -197,7 +197,7 @@ def train_model(
     )
     
     # PASO 6/8: Seleccionando y configurando modelo
-    # ... (Tu lógica de if/elif para seleccionar el modelo es perfecta) ...
+    
     logging.info("-" * 80)
     logging.info("PASO 6/8: Seleccionando y configurando modelo...")
     model_params = {}
@@ -321,7 +321,7 @@ def train_model(
     logging.info(f"  MAE: {mae:.4f}")
     logging.info(f"  MAPE: {mape:.4f}")
     logging.info(f"  R²: {r2:.4f}")
-    # ... (otros prints) ...
+   
     logging.info("="*80)
     
     # Guardamos el modelo con pickle para DVC

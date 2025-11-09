@@ -479,7 +479,9 @@ def clean_mixed_type(df: pd.DataFrame):
     """
 
     
-    df.drop(columns=['mixed_type_col'], inplace= True)
+    
+    if 'mixed_type_col' in df.columns:
+        df.drop(columns=['mixed_type_col'], inplace= True)
     return df
 
 def clean_weather_features(df: pd.DataFrame):
@@ -563,9 +565,9 @@ def clean_target(df: pd.DataFrame):
         DataFrame con la columna 'demanda' limpia y sin valores nulos.
     """
 
-    
-    df['demanda'] = df['demanda'].apply(check_if_numeric_value)
-    df.dropna(subset=['demanda'], inplace=True)
+    if 'demanda' in df.columns:
+        df['demanda'] = df['demanda'].apply(check_if_numeric_value)
+        df.dropna(subset=['demanda'], inplace=True)
     
     return df
 

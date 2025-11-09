@@ -86,7 +86,7 @@ def delete_outliers(df: pd.DataFrame) -> pd.DataFrame:
     mask_vis    = (df['visibility_(10m)'] >= 0.0) & (df['visibility_(10m)'] <= 3581.0)
     mask_dew    = (df['dew_point_temperature(°c)'] >= -34.0) & (df['dew_point_temperature(°c)'] <= 44.4)
     mask_solar  = (df['solar_radiation_(mj/m2)'] >= 0.00) & (df['solar_radiation_(mj/m2)'] <= 2.4)
-    mask_demand = (df['demanda'] >= 0.00) & (df['demanda'] <= 2392.5)
+    
     mask_snow   = (df['snowfall_(cm)'] >= 0.00) & (df['snowfall_(cm)'] <= 40.00)
     mask_rain   = (df['rainfall(mm)'] >= 0.00) & (df['rainfall(mm)'] <= 2015)
 
@@ -97,10 +97,16 @@ def delete_outliers(df: pd.DataFrame) -> pd.DataFrame:
         mask_vis &
         mask_dew &
         mask_solar &
-        mask_demand &
+       
         mask_snow &
         mask_rain
     )
+    
+    if 'demanda' in df.columns:
+        mask_demand = (df['demanda'] >= 0.00) & (df['demanda'] <= 2392.5)
+        combined_mask = combined_mask & mask_demand
+    else:
+        logging.info('no se detecto columna demanda')
 
     df = df[combined_mask]
     
