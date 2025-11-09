@@ -1,0 +1,21 @@
+# Ignorar el entorno virtual
+venv/
+
+# Ignorar configuraciones de Git y DVC
+.git/
+.dvc/
+.dvc/cache/
+
+# Ignorar la carpeta de pruebas
+tests/
+
+# Ignorar archivos de VS Code y Python
+.vscode/
+__pycache__/
+*.pyc
+
+# Ignorar datos locales (el contenedor no los necesita)
+data/
+
+# Ignorar los resultados de MLflow
+mlruns/

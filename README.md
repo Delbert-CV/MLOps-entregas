@@ -173,3 +173,43 @@ FastAPI genera automáticamente la documentación interactiva de la API (schema 
     * Haz clic en **"Try it out"**.
     * El "Example Value" te mostrará el JSON de entrada requerido.
     * Haz clic en **"Execute"** para enviar la petición y recibir una predicción en vivo.
+
+## Docker: API y Reproducibilidad (Puntos 3 & 4)
+
+Para cumplir con los puntos 3 (Reproducibilidad) y 4 (Contenerización), el servicio de API de FastAPI está empaquetado en una imagen de Docker.
+
+Esto garantiza que la API se ejecute en un "entorno limpio" 100% idéntico en cualquier máquina, demostrando la reproducibilidad del proyecto.
+
+### Opción 1: Construir y Correr la Imagen Localmente (Para Desarrollo)
+
+Usa esta opción si has hecho cambios en `app.py` o `src/` y necesitas probarlos.
+
+1.  **Requisito:** Tener Docker Desktop instalado y corriendo.
+2.  **Construir la imagen:** (El `.` usa el `Dockerfile` en el directorio actual)
+    ```bash
+    docker build -t ml-service:latest .
+    ```
+3.  **Correr el contenedor:** (Mapea el puerto 8000 de tu PC al 8000 del contenedor)
+    ```bash
+    docker run -p 8000:8000 ml-service:latest
+    ```
+4.  **Probar:** Accede a la API en `http://localhost:8000/docs`.
+
+### Opción 2: Correr la Imagen Pre-construida (Desde Docker Hub)
+
+Esta es la forma más rápida de ejecutar la API sin construir nada, usando la imagen que ya se publicó en el registro (Cumplimiento del Punto 4).
+
+1.  **Requisito:** Tener Docker Desktop instalado y corriendo.
+2.  **Iniciar sesión** (solo la primera vez):
+    ```bash
+    docker login
+    ```
+3.  **Descargar (Pull) la imagen:** (Reemplaza `tu-usuario` con tu ID de DockerHub)
+    ```bash
+    docker pull tu-usuario/ml-service:1.0.0
+    ```
+4.  **Correr el contenedor:**
+    ```bash
+    docker run -p 8000:8000 tu-usuario/ml-service:1.0.0
+    ```
+5.  **Probar:** Accede a la API en `http://localhost:8000/docs`.
