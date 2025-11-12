@@ -65,7 +65,7 @@ def parse_args():
     parser.add_argument(
         "--target",
         type=str,
-        default="clean_demanda",
+        default="demanda",
         help="Columna objetivo a predecir.",
     )
 

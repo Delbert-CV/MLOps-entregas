@@ -140,6 +140,7 @@ def train_model(
         log_to_mlflow: bool = True 
 ) -> dict:
 
+
     # Iniciamos el logging
     logging.info("="*80)
     logging.info(f"INICIO DE ENTRENAMIENTO - Modelo: {model_type}")
